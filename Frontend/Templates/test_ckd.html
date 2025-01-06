@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CKD</title>
+    <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="./images/account_circle_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png" alt="CKD Logo">
+            <h1>CKD Dashboard</h1>
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Patients</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#" id="logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="welcome-section">
+            <h2>Welcome, Doctor!</h2>
+            <p>Access your patient records, reports, and manage your profile here.</p>
+        </section>
+
+        <section class="stats-section">
+            <h3>Quick Stats</h3>
+            <div class="stats">
+                <div class="stat-box">
+                    <h4>Total Patients</h4>
+                    <p>120</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Reports Pending</h4>
+                    <p>8</p>
+                </div>
+                <div class="stat-box">
+                    <h4>New Messages</h4>
+                    <p>5</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 CKD. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Redirect to the login page
+            window.location.href = '/index.html'; // Update with your actual login page URL
+        });
+    </script>
+</body>
+</html>

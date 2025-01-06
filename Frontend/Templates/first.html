@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login - CKD</title>
+    <link rel="stylesheet" href="first.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <img src="./images/account_circle_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png" alt="CKD Logo">
+            </div>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <p class="forgot-password"><a href="#">Forgot Password?</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent form submission from refreshing the page
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        console.log("Submitting login request:", { username, password });
+
+        try {
+            const response = await fetch('http://127.0.0.1:3000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const result = await response.json();
+            console.log("Login response:", result);
+
+            if (response.ok) {
+                // If login is successful
+                alert(result.message);
+                // Optionally redirect to a new page
+                window.location.href = '/dashboard.html'; // Update with your actual dashboard page URL
+            } else {
+                // If login failed
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        }
+        
+        if (response.ok) {
+    // If login is successful
+        alert(result.message);
+    // Redirect to the dashboard page
+        window.location.href = 'dashboard.html'; // Ensure the path is correct
+        }
+        else {
+    // If login failed
+        alert(result.message);
+    }
+
+    });
+    </script>
+    
+</body>
+</html>
