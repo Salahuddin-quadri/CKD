@@ -10,7 +10,7 @@ from lightgbm import LGBMClassifier
 from catboost import CatBoostClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
-from preprocessing import preprocess_data, scale_data
+from preprocessing import preprocess_data#, scale_data
 
 # path
 DATA_PATH = '..data/raw.csv'
@@ -25,7 +25,7 @@ X, y = preprocess_data(DATA_PATH , TARGET_COLUMN)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Feature scaling
-X_train, X_test = scale_data(X_train, X_test)
+# X_train, X_test = scale_data(X_train, X_test)
 
 # Define models
 models = {
