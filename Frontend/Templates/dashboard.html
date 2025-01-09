@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKD Dashboard</title>
+    <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Navbar Section -->
+        <header class="navbar">
+            <div class="logo">
+                <img src="./person_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png" alt="CKD Logo">
+                <span>CKD Portal</span>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-btn">User &#9662;</button>
+                <div class="dropdown-menu">
+                    <a href="#">Profile</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Section -->
+        <main class="main-content">
+            <h1>Welcome to the CKD Testing Dashboard</h1>
+            <p>Use this platform to test for CKD and manage your health efficiently.</p>
+
+            <!-- CKD Testing Section -->
+            <div class="test-section">
+                <div class="test-box">
+                    <img src="./download.png" alt="CKD Test Image" class="test-image">
+                    <h2>CKD Testing</h2>
+                    <form id="ckdTestForm">
+                        <button type="submit" class="submit-btn">Start Test</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="./dashboard.js"></script>
+</body>
+</html>
