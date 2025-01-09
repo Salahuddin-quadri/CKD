@@ -1,0 +1,133 @@
+/* Full-page background styling */
+.background-container {
+    position: relative; /* For pseudo-element */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    overflow: hidden; /* Prevents content overflow */
+}
+
+/* Background image using pseudo-element */
+.background-container::before {
+    content: ''; /* Required for pseudo-elements */
+    position: absolute; /* Full-page overlay */
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('./Drupal-TheWell_kidney\\ disease_AS_598468387.jpg'); /* Path to your image */
+    background-size: cover; /* Covers the full container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* No repeating */
+    z-index: -1; /* Push behind content */
+    filter: brightness(0.8); /* Slightly darken the image for better readability */
+}
+
+/* Login container styling */
+.login-container {
+    background: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Soft shadow */
+    padding: 30px;
+    max-width: 400px; /* Responsive width */
+    width: 90%; /* Adjust for smaller screens */
+    text-align: center; /* Center-align content */
+    animation: fadeIn 1s ease-in-out; /* Add a fade-in effect */
+}
+
+/* Logo styling */
+.logo img {
+    max-width: 80px;
+    margin-bottom: 20px;
+}
+
+/* Headings and tagline */
+h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+/* Input fields styling */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Login button styling */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Forgot password link */
+.forgot-password {
+    margin-top: 10px;
+}
+
+.forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* Fade-in animation for the login container */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
