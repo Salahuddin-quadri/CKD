@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Paths to the pretrained models
+
 MODEL_PATHS = {
     "Logistic Regression": '../models/Logistic_Regression.pkl',
     "SVM": '../models/SVM.pkl',
@@ -23,6 +24,7 @@ MODEL_PATHS = {
     "K-Nearest Neighbors": '../models/K-Nearest_Neighbors.pkl',
     "Naive Bayes": '../models/Naive_Bayes.pkl'
 }
+
 
 # Initialize dictionaries to store models and scalers
 models = {}
@@ -82,16 +84,15 @@ def preprocess_features(form_data):
     except Exception as e:
         logger.error(f"Error in preprocessing features: {str(e)}")
         raise
-
 @app.route('/')
 def dashboard():
+    """Render the dashboard page"""
     return render_template('dashboard.html')
 
-# Route for the CKD test form
 @app.route('/test_ckd')
 def test_ckd():
+    """Render the CKD test form"""
     return render_template('test_ckd.html')
-
 # @app.route('/')
 # def home():
 #     """Render the home page"""
