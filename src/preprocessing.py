@@ -4,12 +4,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import KNNImputer, SimpleImputer
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
-from scipy.sparse import issparse
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 def preprocess_data(data_path, target_column):
     # Load the dataset
     data = pd.read_csv(data_path)
+    data = data.reset_index(drop=True)
+    data = data.drop(columns=['id'])
     
     # Separate the features
     X = data.drop(columns=[target_column])
@@ -25,23 +26,19 @@ def preprocess_data(data_path, target_column):
     ])
 
     # categorical transformer
-    categorical_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='most_frequent')), 
-        ('encoder', OneHotEncoder(handle_unknown='ignore'))  
-    ])
+    def encode_categorical(df, categorical_cols):
+        for col in categorical_cols:
+            df[col] = LabelEncoder().fit_transform(df[col])
+        return df
 
-    # Combine
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('num', numerical_transformer, numerical_cols),
-            ('cat', categorical_transformer, categorical_cols)
-        ]
-    )
-
-    X_processed = preprocessor.fit_transform(X).toarray()
+    # Preprocess numerical columns
+    X[numerical_cols] = numerical_transformer.fit_transform(X[numerical_cols])
+    
+    # Preprocess categorical columns
+    X = encode_categorical(X, categorical_cols)
     
     # encode target variable
     label_encoder = LabelEncoder()
     y_encoded = label_encoder.fit_transform(y)
 
-    return X_processed, y_encoded
+    return X.values, y_encoded

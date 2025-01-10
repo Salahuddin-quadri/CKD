@@ -23,7 +23,7 @@ def define_and_train_models(X, y):
     dict: A dictionary of trained model names and their instances.
     """
     models = {
-        "Logistic Regression": LogisticRegression(),
+        "Logistic Regression": LogisticRegression(max_iter=500),
         "SVM": SVC(probability=True),
         "Decision Tree": DecisionTreeClassifier(),
         "Random Forest": RandomForestClassifier(),

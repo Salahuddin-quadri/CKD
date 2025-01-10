@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKD Prediction Results</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ensemble-result {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .danger {
+            color: #dc3545;
+        }
+
+        .safe {
+            color: #28a745;
+        }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .model-card {
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .model-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .confidence-bar {
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: #007bff;
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        .feature-values {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .feature-item {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Chronic Kidney Disease Prediction Results</h1>
+        </div>
+
+        <!-- Ensemble Result -->
+        <div class="ensemble-result">
+            <h2>Overall Prediction</h2>
+            <h3 class="{{ ensemble_result.status }}">
+                {{ ensemble_result.result }}
+            </h3>
+            <p>Confidence: {{ ensemble_result.confidence }}%</p>
+            {% if ensemble_result.prediction == 1 %}
+                <p class="danger">Please consult a healthcare professional for proper evaluation.</p>
+            {% else %}
+                <p class="safe">Continue maintaining your healthy lifestyle!</p>
+            {% endif %}
+        </div>
+
+        <!-- Individual Model Predictions -->
+        <h2>Individual Model Predictions</h2>
+        <div class="models-grid">
+            {% for pred in predictions %}
+            <div class="model-card">
+                <div class="model-header">{{ pred.model_name }}</div>
+                <p class="{{ pred.status }}">{{ pred.result }}</p>
+                {% if pred.confidence %}
+                <div>
+                    <p>Confidence: {{ pred.confidence }}%</p>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: {{ pred.confidence }}%"></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Input Feature Values -->
+        <div class="feature-values">
+            <h2>Input Values</h2>
+            <div class="feature-grid">
+                {% for feature, value in feature_values.items() %}
+                <div class="feature-item">
+                    <strong>{{ feature }}:</strong> {{ value }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" class="button">Make Another Prediction</a>
+        </div>
+    </div>
+
+    <script>
+        // Animate confidence bars on page load
+        window.onload = function() {
+            document.querySelectorAll('.confidence-fill').forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        }
+    </script>
+</body>
+</html>

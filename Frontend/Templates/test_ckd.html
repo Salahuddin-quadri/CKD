@@ -1,163 +1,169 @@
-<link rel="stylesheet" href="./test_ckd.css">
-<section class="attributes-section">
-    <h3>Patient Testing Attributes</h3>
-    <form id="attributesForm" class="attributes-form">
-        <div class="form-grid">
-            <!-- Numerical and Nominal Inputs -->
-            <div class="form-group">
-                <label for="age">Age (numerical)</label>
-                <input type="number" id="age" name="age" placeholder="Age in years" required>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='../static/test_ckd.css') }}">
+    <title>CKD Prediction</title>
+</head>
+<body>
+    <section class="attributes-section">
+        <h3>Patient Testing Attributes</h3>
+        <form id="attributesForm" class="attributes-form" method="post" action="/predict">
+            <div class="form-grid">
+                <!-- Your form inputs go here as described in your message -->
+                <!-- Paste the form inputs from your message here -->
+                <div class="form-group">
+                    <label for="age">Age (numerical)</label>
+                    <input type="number" id="age" name="age" placeholder="Age in years" required>
+                </div>
+                <div class="form-group">
+                    <label for="bp">Blood Pressure (numerical)</label>
+                    <input type="number" id="bp" name="bp" placeholder="Blood Pressure in mm/Hg" required>
+                </div>
+                <div class="form-group">
+                    <label for="sg">Specific Gravity (nominal)</label>
+                    <select id="sg" name="sg" required>
+                        <option value="1.005">1.005</option>
+                        <option value="1.010">1.010</option>
+                        <option value="1.015">1.015</option>
+                        <option value="1.020">1.020</option>
+                        <option value="1.025">1.025</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="al">Albumin (nominal)</label>
+                    <select id="al" name="al" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="su">Sugar (nominal)</label>
+                    <select id="su" name="su" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rbc">Red Blood Cells (nominal)</label>
+                    <select id="rbc" name="rbc" required>
+                        <option value="normal">Normal</option>
+                        <option value="abnormal">Abnormal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pc">Pus Cell (nominal)</label>
+                    <select id="pc" name="pc" required>
+                        <option value="normal">Normal</option>
+                        <option value="abnormal">Abnormal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pcc">Pus Cell Clumps (nominal)</label>
+                    <select id="pcc" name="pcc" required>
+                        <option value="present">Present</option>
+                        <option value="notpresent">Not Present</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ba">Bacteria (nominal)</label>
+                    <select id="ba" name="ba" required>
+                        <option value="present">Present</option>
+                        <option value="notpresent">Not Present</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bgr">Blood Glucose Random (numerical)</label>
+                    <input type="number" id="bgr" name="bgr" placeholder="Blood Glucose Random in mg/dl" required>
+                </div>
+                <div class="form-group">
+                    <label for="bu">Blood Urea (numerical)</label>
+                    <input type="number" id="bu" name="bu" placeholder="Blood Urea in mg/dl" required>
+                </div>
+                <div class="form-group">
+                    <label for="sc">Serum Creatinine (numerical)</label>
+                    <input type="number" id="sc" name="sc" placeholder="Serum Creatinine in mg/dl" required>
+                </div>
+                <div class="form-group">
+                    <label for="sod">Sodium (numerical)</label>
+                    <input type="number" id="sod" name="sod" placeholder="Sodium in mEq/L" required>
+                </div>
+                <div class="form-group">
+                    <label for="pot">Potassium (numerical)</label>
+                    <input type="number" id="pot" name="pot" placeholder="Potassium in mEq/L" required>
+                </div>
+                <div class="form-group">
+                    <label for="hemo">Hemoglobin (numerical)</label>
+                    <input type="number" id="hemo" name="hemo" placeholder="Hemoglobin in grams" required>
+                </div>
+                <div class="form-group">
+                    <label for="pcv">Packed Cell Volume (numerical)</label>
+                    <input type="number" id="pcv" name="pcv" placeholder="Packed Cell Volume" required>
+                </div>
+                <div class="form-group">
+                    <label for="wc">White Blood Cell Count (numerical)</label>
+                    <input type="number" id="wc" name="wc" placeholder="White Blood Cell Count in cells/cumm" required>
+                </div>
+                <div class="form-group">
+                    <label for="rc">Red Blood Cell Count (numerical)</label>
+                    <input type="number" id="rc" name="rc" placeholder="Red Blood Cell Count in millions/cmm" required>
+                </div>
+                <div class="form-group">
+                    <label for="htn">Hypertension (nominal)</label>
+                    <select id="htn" name="htn" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dm">Diabetes Mellitus (nominal)</label>
+                    <select id="dm" name="dm" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cad">Coronary Artery Disease (nominal)</label>
+                    <select id="cad" name="cad" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="appet">Appetite (nominal)</label>
+                    <select id="appet" name="appet" required>
+                        <option value="good">Good</option>
+                        <option value="poor">Poor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pe">Pedal Edema (nominal)</label>
+                    <select id="pe" name="pe" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ane">Anemia (nominal)</label>
+                    <select id="ane" name="ane" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="bp">Blood Pressure (numerical)</label>
-                <input type="number" id="bp" name="bp" placeholder="Blood Pressure in mm/Hg" required>
-            </div>
-            <div class="form-group">
-                <label for="sg">Specific Gravity (nominal)</label>
-                <select id="sg" name="sg" required>
-                    <option value="1.005">1.005</option>
-                    <option value="1.010">1.010</option>
-                    <option value="1.015">1.015</option>
-                    <option value="1.020">1.020</option>
-                    <option value="1.025">1.025</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="al">Albumin (nominal)</label>
-                <select id="al" name="al" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="su">Sugar (nominal)</label>
-                <select id="su" name="su" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="rbc">Red Blood Cells (nominal)</label>
-                <select id="rbc" name="rbc" required>
-                    <option value="normal">Normal</option>
-                    <option value="abnormal">Abnormal</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="pc">Pus Cell (nominal)</label>
-                <select id="pc" name="pc" required>
-                    <option value="normal">Normal</option>
-                    <option value="abnormal">Abnormal</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="pcc">Pus Cell Clumps (nominal)</label>
-                <select id="pcc" name="pcc" required>
-                    <option value="present">Present</option>
-                    <option value="notpresent">Not Present</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ba">Bacteria (nominal)</label>
-                <select id="ba" name="ba" required>
-                    <option value="present">Present</option>
-                    <option value="notpresent">Not Present</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="bgr">Blood Glucose Random (numerical)</label>
-                <input type="number" id="bgr" name="bgr" placeholder="Blood Glucose Random in mg/dl" required>
-            </div>
-            <div class="form-group">
-                <label for="bu">Blood Urea (numerical)</label>
-                <input type="number" id="bu" name="bu" placeholder="Blood Urea in mg/dl" required>
-            </div>
-            <div class="form-group">
-                <label for="sc">Serum Creatinine (numerical)</label>
-                <input type="number" id="sc" name="sc" placeholder="Serum Creatinine in mg/dl" required>
-            </div>
-            <div class="form-group">
-                <label for="sod">Sodium (numerical)</label>
-                <input type="number" id="sod" name="sod" placeholder="Sodium in mEq/L" required>
-            </div>
-            <div class="form-group">
-                <label for="pot">Potassium (numerical)</label>
-                <input type="number" id="pot" name="pot" placeholder="Potassium in mEq/L" required>
-            </div>
-            <div class="form-group">
-                <label for="hemo">Hemoglobin (numerical)</label>
-                <input type="number" id="hemo" name="hemo" placeholder="Hemoglobin in grams" required>
-            </div>
-            <div class="form-group">
-                <label for="pcv">Packed Cell Volume (numerical)</label>
-                <input type="number" id="pcv" name="pcv" placeholder="Packed Cell Volume" required>
-            </div>
-            <div class="form-group">
-                <label for="wc">White Blood Cell Count (numerical)</label>
-                <input type="number" id="wc" name="wc" placeholder="White Blood Cell Count in cells/cumm" required>
-            </div>
-            <div class="form-group">
-                <label for="rc">Red Blood Cell Count (numerical)</label>
-                <input type="number" id="rc" name="rc" placeholder="Red Blood Cell Count in millions/cmm" required>
-            </div>
-            <div class="form-group">
-                <label for="htn">Hypertension (nominal)</label>
-                <select id="htn" name="htn" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="dm">Diabetes Mellitus (nominal)</label>
-                <select id="dm" name="dm" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="cad">Coronary Artery Disease (nominal)</label>
-                <select id="cad" name="cad" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="appet">Appetite (nominal)</label>
-                <select id="appet" name="appet" required>
-                    <option value="good">Good</option>
-                    <option value="poor">Poor</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="pe">Pedal Edema (nominal)</label>
-                <select id="pe" name="pe" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ane">Anemia (nominal)</label>
-                <select id="ane" name="ane" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="class">Class (nominal)</label>
-                <select id="class" name="class" required>
-                    <option value="ckd">CKD</option>
-                    <option value="notckd">Not CKD</option>
-                </select>
-            </div>
-        </div>
-        <button type="submit" class="submit-btn">Submit</button>
-    </form>
-</section>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </section>
+</body>
+</html>
