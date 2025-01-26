@@ -13,6 +13,8 @@ TARGET_COLUMN = 'classification'
 # Preprocessing
 X, y = preprocess_data(DATA_PATH , TARGET_COLUMN)
 
+print(y)
+
 #train the models
 trained_models = define_and_train_models(X, y)
 
