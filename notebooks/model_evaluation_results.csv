@@ -1,0 +1,10 @@
+Model,Accuracy,F1 Score
+Logistic Regression,0.9875,0.987446
+SVM,0.8125,0.816599
+Decision Tree,0.9875,0.987549
+Random Forest,0.9875,0.987446
+Gradient Boosting,0.9875,0.987549
+XGBoost,0.975,0.975
+CatBoost,0.9875,0.987549
+K-Nearest Neighbors,0.875,0.877821
+Naive Bayes,0.975,0.975

@@ -7,9 +7,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 
 class CustomCategoricalEncoder(BaseEstimator, TransformerMixin):
-    """
-    Custom transformer for categorical encoding based on the given logic.
-    """
+    
     def fit(self, X, y=None):
         return self
 
