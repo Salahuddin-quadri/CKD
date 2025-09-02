@@ -17,7 +17,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-image: url('./Drupal-TheWell_kidney\\ disease_AS_598468387.jpg'); /* Path to your image */
+    background-image: url('../images/Drupal-TheWell_kidney%20disease_AS_598468387.jpg'); /* Path to your image */
     background-size: cover; /* Covers the full container */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* No repeating */

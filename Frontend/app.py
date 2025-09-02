@@ -1,11 +1,19 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import pickle
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 import logging
 import os
+import warnings
+import xgboost as xgb
 
-app = Flask(__name__)
+# Ensure Flask finds case-sensitive template/static directories on Linux
+BASE_DIR = os.path.dirname(__file__)
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, 'Templates'),
+    static_folder=os.path.join(BASE_DIR, 'Static')
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -35,11 +43,39 @@ def load_models():
     try:
         for model_name, path in MODEL_PATHS.items():
             if os.path.exists(path):
-                with open(path, 'rb') as file:
-                    models[model_name] = pickle.load(file)
+                if model_name == "XGBoost":
+                    # Prefer a native saved model to avoid warnings
+                    native_path = path.rsplit('.', 1)[0] + '.json'
+                    if os.path.exists(native_path):
+                        booster = xgb.Booster()
+                        booster.load_model(native_path)
+                        models[model_name] = booster
+                    else:
+                        # One-time conversion: load pickle (suppress warning), export to native, then keep booster in memory
+                        try:
+                            with warnings.catch_warnings():
+                                warnings.simplefilter("ignore", category=UserWarning)
+                                with open(path, 'rb') as file:
+                                    loaded = pickle.load(file)
+                            # Get Booster regardless of wrapper type
+                            if isinstance(loaded, xgb.Booster):
+                                booster = loaded
+                            else:
+                                booster = loaded.get_booster()
+                            # Save native format for future runs
+                            booster.save_model(native_path)
+                            models[model_name] = booster
+                        except Exception:
+                            # As a last resort, attempt to load as Booster path (unlikely for .pkl)
+                            booster = xgb.Booster()
+                            booster.load_model(path)
+                            models[model_name] = booster
+                else:
+                    with open(path, 'rb') as file:
+                        models[model_name] = pickle.load(file)
                 
                 # Load corresponding scaler if it exists
-                scaler_path = f'model/scaler_{model_name.lower().replace(" ", "_")}.pkl'
+                scaler_path = f'../models/scaler_{model_name.lower().replace(" ", "_")}.pkl'
                 if os.path.exists(scaler_path):
                     with open(scaler_path, 'rb') as file:
                         scalers[model_name] = pickle.load(file)
@@ -116,19 +152,42 @@ def predict():
                 scaled_features = scalers[model_name].transform(features)
             else:
                 scaled_features = features
-            
-            # Get prediction and probability scores
-            prediction = model.predict(scaled_features)[0]
-            
-            try:
-                probability = model.predict_proba(scaled_features)[0]
-                confidence = round(max(probability) * 100, 2)  # Convert to percentage
-            except:
-                confidence = None
-            
+
+            prediction = None
+            confidence = None
+
+            if model_name == "XGBoost":
+                try:
+                    if isinstance(model, xgb.Booster):
+                        dmatrix = xgb.DMatrix(scaled_features)
+                        prob = float(model.predict(dmatrix)[0])
+                        prediction = int(prob >= 0.5)
+                        confidence = round(max(prob, 1 - prob) * 100, 2)
+                    else:
+                        prediction = int(model.predict(scaled_features)[0])
+                        try:
+                            proba = model.predict_proba(scaled_features)[0]
+                            confidence = round(float(max(proba)) * 100, 2)
+                        except Exception:
+                            confidence = None
+                except Exception:
+                    prediction = int(model.predict(scaled_features)[0])
+                    try:
+                        proba = model.predict_proba(scaled_features)[0]
+                        confidence = round(float(max(proba)) * 100, 2)
+                    except Exception:
+                        confidence = None
+            else:
+                prediction = int(model.predict(scaled_features)[0])
+                try:
+                    proba = model.predict_proba(scaled_features)[0]
+                    confidence = round(float(max(proba)) * 100, 2)
+                except Exception:
+                    confidence = None
+
             all_predictions.append({
                 'model_name': model_name,
-                'prediction': 1 if prediction == 1 else 0,
+                'prediction': int(prediction),
                 'result': "Chronic Kidney Disease (CKD)" if prediction == 1 else "No CKD Detected",
                 'confidence': confidence,
                 'status': 'danger' if prediction == 1 else 'safe'
@@ -192,17 +251,42 @@ def api_predict():
                 scaled_features = scalers[model_name].transform(features)
             else:
                 scaled_features = features
-                
-            prediction = model.predict(scaled_features)[0]
-            try:
-                probability = model.predict_proba(scaled_features)[0]
-                confidence = max(probability) * 100
-            except:
-                confidence = None
-                
+
+            prediction = None
+            confidence = None
+
+            if model_name == "XGBoost":
+                try:
+                    if isinstance(model, xgb.Booster):
+                        dmatrix = xgb.DMatrix(scaled_features)
+                        prob = float(model.predict(dmatrix)[0])
+                        prediction = int(prob >= 0.5)
+                        confidence = round(max(prob, 1 - prob) * 100, 2)
+                    else:
+                        prediction = int(model.predict(scaled_features)[0])
+                        try:
+                            proba = model.predict_proba(scaled_features)[0]
+                            confidence = round(float(max(proba)) * 100, 2)
+                        except Exception:
+                            confidence = None
+                except Exception:
+                    prediction = int(model.predict(scaled_features)[0])
+                    try:
+                        proba = model.predict_proba(scaled_features)[0]
+                        confidence = round(float(max(proba)) * 100, 2)
+                    except Exception:
+                        confidence = None
+            else:
+                prediction = int(model.predict(scaled_features)[0])
+                try:
+                    proba = model.predict_proba(scaled_features)[0]
+                    confidence = round(float(max(proba)) * 100, 2)
+                except Exception:
+                    confidence = None
+
             predictions[model_name] = {
                 'prediction': int(prediction),
-                'confidence': round(confidence, 2) if confidence is not None else None,
+                'confidence': confidence,
                 'label': "CKD" if prediction == 1 else "Not CKD"
             }
         
@@ -230,6 +314,11 @@ def internal_error(error):
 
 # Load models when the application starts
 load_models()
+
+# Serve images from the local images directory without changing folder structure
+@app.route('/images/<path:filename>')
+def serve_images(filename):
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'images'), filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
